@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/">
+        <fieldset>
+            <label for="nama">Nama</label>
+            <input type="text" name="nama" id="nama"  />
+        </fieldset>
+
+        <fieldset>
+            <label for="pesan">Pesan</label>
+            <textarea type="text" name="pesan" id="pesan"></textarea>
+        </fieldset>
+
+        <fieldset>
+            <label for="kota">Kota</label>
+            <select name="kota" id="kota">
+                <option value="Bogor">Bogor</option>
+                <option value="Jakarta">Jakarta</option>
+                <option value="Mandailing">Mandailing</option>
+                <option value="Morokwali">Morokwali</option>
+                <option value="Subang">Subang</option>
+                <option value="Jombang">Jombang</option>
+            </select>
+        </fieldset>
+    </form>
+    <h3>Hasil</h3>
+    <div>Nama : <span id="hasil-nama"></span></div>
+    <div>Kota :<span id="hasil-kota"></span></div>
+    <div>Pesan :<span id="hasil-pesan"></span></div>
+    <script src="form.js"></script>
+</body>
+</html>
