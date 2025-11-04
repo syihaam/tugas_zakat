@@ -1,68 +1,81 @@
-var inputgram = document.getElementById("emas-gram");
+//TODO: isi variabel di bawah dgn fungsi getElementById sesuai id
+var inputGram = document.getElementById("emas-gram");
 var tombol = document.getElementById("hitung");
 var hasil = document.getElementById("hasil");
-var historylist = document.getElementById("history");
+var historyList = document.getElementById("history");
 
-var hargaEmasRupiah = 1100000;
+//TODO: isi dgn nilai harga emas/gram rumahan
+var hargaEmasRupiah = 2000000;
 
-function muatHIstory(){
-        let data = localStorage.getItem("zakathistory");
+function muatHistory(){
+    let data = localStorage.getItem("zakatHistory");
 
-        if(!data) {
-            historylist.innerHTML = "";
-            return;
-        }
-
-        let riwayat = JSON.parse(data);
-        historylist.innerHTML = "";
-
-        riwayat.forEach(function(item){
-            let li = document.createElement("li");
-            li.textContent = item;
-            historylist.appendChild(li);
-        });
-}
-
-function simpanHistory(text){
-    let data = localStorage.getItem("zakathistory");
-    let riwayat = data ? JSON.parse(data) : [];
-
-    riwayat.unshift(text)
-    if(riwayat.length > 10){
-        riwayat.pop();
+    if(data === null){
+        data = [];
+    } else {
+        data = JSON.parse(data);
     }
 
-    localStorage.setItem("zakathistory" , JSON.stringify(riwayat));
-    muatHIstory();
+    historyList.innerHTML = "";
+    for(var i = 0; i < data.length; i++){
+        var li = document.createElement("li");
+        li.innerHTML = '<span>' + data[i] + '</span>';
+        historyList.appendChild(li);
+    }
+
+    console.log(data);
 }
 
-tombol.addEventListener("click", function() {
-    var emas = Number(inputgram.value);
+//simpan ke localStorage key `zakatHistory`
+function simpanHistory(text){
+    let data = localStorage.getItem("zakatHistory");
+    if(data === null){
+        data = [];
+    } else {
+        data = JSON.parse(data);
+    }
+
+    data.unshift(text);
+
+    if(data.length > 10){
+        data = data.slice(0, 10);
+    }
+
+    localStorage.setItem("zakatHistory", JSON.stringify(data));
+    muatHistory();
+}
+
+tombol.addEventListener("click", function(){
+    //TODO: ambil nilai input emas, parsing ke number, nisab = 85
+    var input = inputGram.value.trim();
+    var emas = parseFloat(input);
     var nisab = 85;
 
-    if (!emas || emas <= 0) {
-        hasil.textContent = "Masukkan jumlah emas yang valid!";
+    console.log(emas);
+
+    //TODO: jika input tidak valid
+    if(input === "") {
+        alert("KOSONG!!!!");
+        hasil.textContent = "Tolong coba lagi";
         return;
     }
 
-    if (emas < nisab) {
-        let pesan = `Emas ${emas} gram → Belum wajib zakat.`;
-        hasil.textContent = pesan;
-        simpanHistory(pesan);
+    //TODO: jika emas < nisab
+    if(emas < nisab){
+        hasil.textContent = "Belum Wajib Zakat";
+        simpanHistory(`${emas} gram maka "Belum Wajib Zakat"`);
     } else {
-    
-        var zakat = emas * 0.025;
-        var rupiah = zakat * hargaEmasRupiah;
+        //TODO: hitung zakat = emas*0.025
+        let zakat = emas * 0.025;
+        let rupiah = zakat * hargaEmasRupiah;
 
-        let pesan = `Zakat emas: ${zakat.toFixed(2)} gram (≈ Rp ${rupiah.toLocaleString()})`;
-        hasil.textContent = pesan;
-        simpanHistory(pesan);
+        hasil.textContent = `Wajib Zakat Emas ${zakat} gram atau Rp.${rupiah.toLocaleString()}`;
+        simpanHistory(`${emas} gram maka wajib zakat sebesar Rp.${rupiah.toLocaleString()}`);
     }
 
-    inputgram.value = "";
+    console.log(hasil);
+    inputGram.value = "";
 });
 
-muatHIstory();
-
-
-
+//TODO: panggil muatHistory() agar riwayat langsung tampil
+muatHistory();
